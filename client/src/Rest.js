@@ -13,7 +13,7 @@ const Interface = (props) => {
     const visible = window.location.pathname === '/' ? true : false;
 
     useEffect(() => {
-        Axios.get("hhttps://fs-todo.glitch.me/getTask").then((response) => {
+        Axios.get("https://fs-todo.glitch.me/getTask").then((response) => {
             setListOfTask(response.data);
         })
     }, [listOfTask]);
@@ -44,7 +44,7 @@ const Interface = (props) => {
     const deleteTask = (taskId) => {
         const confirmed = window.confirm('Are you sure you want to delete this?');
         if (confirmed) {
-            Axios.delete(`hhttps://fs-todo.glitch.me/deleteTask/${taskId}`)
+            Axios.delete(`https://fs-todo.glitch.me/deleteTask/${taskId}`)
                 .then((response) => {
                     alert('Task deleted successfully');
                     // After successful deletion, update the list of tasks by removing the deleted task
