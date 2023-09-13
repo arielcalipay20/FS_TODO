@@ -2,6 +2,9 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const UserModel = require('./models/Users');
+require('dotenv').config();
+
+const port = process.env.PORT || 3001;
 
 //For Connecting Front and Back
 const cors = require("cors");
@@ -11,7 +14,7 @@ app.use(express.json());
 
 app.use(cors());
 
-mongoose.connect('mongodb+srv://arielcalipay2:arielcalipay2001@cluster0.85qeyds.mongodb.net/todo?retryWrites=true&w=majority');
+mongoose.connect(process.env.DB);
 
 app.get('/getTask', async (req, res) => {
     try {
@@ -75,6 +78,6 @@ app.put('/updateTask/:id', async (req, res) => {
 });
 
 
-app.listen(3001, () => {
-    console.log('Servers Run Correctly');
+app.listen(port, () => {
+    console.log(`Servers Run Correctly In Port ${port}`);
 })
