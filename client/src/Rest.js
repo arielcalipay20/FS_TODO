@@ -18,11 +18,16 @@ const Interface = (props) => {
         })
     }, [listOfTask]);
 
+    // const handleEditChange = (event) => {
+    //     const { name, value } = event.target;
+    //     if (/^\d{0,1}$/.test(value)) {
+    //         setEditedTask({ ...editedTask, [name]: value });
+    //     }
+    // };
+
     const handleEditChange = (event) => {
         const { name, value } = event.target;
-        if (/^\d{0,1}$/.test(value)) {
-            setEditedTask({ ...editedTask, [name]: value });
-        }
+        setEditedTask({ ...editedTask, [name]: value });
     };
 
     const handleEditTask = (task) => {
