@@ -99,8 +99,6 @@ $gray-color: gray;
 
         .table-container {
             margin-top: 4rem;
-            width: 90%;
-            margin: 0 auto;
 
             table {
                 border: 1px solid black;
@@ -192,9 +190,16 @@ $gray-color: gray;
         .App {
             .form-container {
                 text-align: center;
+
                 input {
                     display: block;
                     margin-bottom: 1rem;
+                }
+            }
+
+            .table-container {
+                table {
+                    width: 50vw;
                 }
             }
         }
