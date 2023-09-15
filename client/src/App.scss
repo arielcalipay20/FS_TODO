@@ -172,3 +172,29 @@ $gray-color: gray;
 
 
 }
+
+@media (max-width: 768px) {
+    * {
+        nav {
+            flex-direction: column;
+
+            ul {
+                min-height: auto;
+
+                h1 {
+                    text-align: center;
+                }
+            }
+        }
+
+        .App {
+            .form-container {
+                text-align: center;
+                input {
+                    display: block;
+                    margin-bottom: 1rem;
+                }
+            }
+        }
+    }
+}

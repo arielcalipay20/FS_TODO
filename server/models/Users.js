@@ -5,8 +5,8 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    repetition: {
-        type: Number,
+    time: {
+        type: String,
         required: true
     }
 });

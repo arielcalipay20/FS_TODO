@@ -67,9 +67,9 @@ app.delete('/deleteTask/:id', async (req, res) => {
 app.put('/updateTask/:id', async (req, res) => {
     try {
         const taskId = req.params.id;
-        const { task, repetition } = req.body;
+        const { task, time } = req.body;
 
-        const updatedTask = await UserModel.findByIdAndUpdate(taskId, { task, repetition }, { new: true });
+        const updatedTask = await UserModel.findByIdAndUpdate(taskId, { task, time }, { new: true });
 
         if (updatedTask) {
             res.json(updatedTask);

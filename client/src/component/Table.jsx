@@ -1,28 +1,27 @@
 import React from 'react';
 
 const TableComponent = (props) => {
+    // Filter the list of tasks based on the search query
+    const filteredTasks = props.searchQuery
+        ? props.listOfTask.filter((task) =>
+            task.task.toLowerCase().includes(props.searchQuery.toLowerCase())
+        )
+        : props.listOfTask;
 
     return (
         <>
 
             <table>
-
                 <thead>
-
                     <tr>
                         <th>Task</th>
-                        <th>Repetition</th>
-                        {props.setVisible ?
-                            <th>Actions</th>
-                            : null
-                        }
+                        <th>Time</th>
+                        {props.setVisible && <th>Actions</th>}
                     </tr>
-
                 </thead>
 
                 <tbody>
-
-                    {props.listOfTask.map((task) => {
+                    {filteredTasks.map((task) => {
                         const isEdited = props.editedTask.taskId === task._id;
                         return (
                             <tr key={task._id}>
@@ -41,21 +40,21 @@ const TableComponent = (props) => {
                                 <td>
                                     {isEdited ? (
                                         <input
-                                            type='number'
-                                            name='repetition'
-                                            value={props.editedTask.repetition}
+                                            type='text'
+                                            name='time'
+                                            value={props.editedTask.time}
                                             onChange={props.handleEditChange}
                                         />
                                     ) : (
-                                        `${task.repetition}(x)`
+                                        `${task.time}`
                                     )}
                                 </td>
-                                {props.setVisible ?
+                                {props.setVisible && (
                                     <td>
                                         {isEdited ? (
                                             <>
                                                 <button onClick={props.updateFunction}>Update</button>
-                                                <button onClick={() => props.setEditedTask({ taskId: null, task: '', repetition: '' })}>
+                                                <button onClick={() => props.setEditedTask({ taskId: null, task: '', time: '' })}>
                                                     Cancel
                                                 </button>
                                             </>
@@ -66,19 +65,14 @@ const TableComponent = (props) => {
                                             </>
                                         )}
                                     </td>
-                                    : null
-                                }
-
+                                )}
                             </tr>
                         );
                     })}
-
                 </tbody>
-
             </table>
-
         </>
     );
-}
+};
 
 export default TableComponent;

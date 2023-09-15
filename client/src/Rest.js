@@ -8,9 +8,26 @@ import FormComponent from './component/Form';
 const Interface = (props) => {
     const [listOfTask, setListOfTask] = useState([]);
     const [task, setTask] = useState('');
-    const [repetition, setRepetition] = useState('');
-    const [editedTask, setEditedTask] = useState({ taskId: null, task: '', repetition: '' });
+    const [time, setTime] = useState('');
+    const [editedTask, setEditedTask] = useState({ taskId: null, task: '', time: '' });
     const visible = window.location.pathname === '/' ? true : false;
+
+    const [searchQuery, setSearchQuery] = useState('');
+
+    const handleSearchChange = (event) => {
+        setSearchQuery(event.target.value);
+    };
+
+
+    const searchTasks = () => {
+        // Filter the list of tasks based on the search query
+        const filteredTasks = listOfTask.filter((task) =>
+            task.task.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+
+        // Update the list of tasks with the filtered results
+        setListOfTask(filteredTasks);
+    };
 
     useEffect(() => {
         Axios.get("https://fs-todo.glitch.me/getTask").then((response) => {
@@ -31,16 +48,16 @@ const Interface = (props) => {
     };
 
     const handleEditTask = (task) => {
-        setEditedTask({ taskId: task._id, task: task.task, repetition: task.repetition });
+        setEditedTask({ taskId: task._id, task: task.task, time: task.time });
     };
 
     const createTask = () => {
         Axios.post('https://fs-todo.glitch.me/addTask', {
             task: task,
-            repetition: repetition
+            time: time
         }).then((response) => {
             setTask('');
-            setRepetition('');
+            setTime('');
             setListOfTask([...listOfTask, response.data]); // Add the new task to the list
             alert('added successfully');
         });
@@ -65,21 +82,21 @@ const Interface = (props) => {
     };
 
     const updateTask = () => {
-        const { taskId, task, repetition } = editedTask;
+        const { taskId, task, time } = editedTask;
 
         // Check if the task value is unchanged
         const originalTask = listOfTask.find((t) => t._id === taskId);
-        if (originalTask.task === task && originalTask.repetition === repetition) {
+        if (originalTask.task === task && originalTask.time === time) {
             alert('No changes were made to the task');
             return; // Do not proceed with the update
         }
 
-        Axios.put(`https://fs-todo.glitch.me/updateTask/${taskId}`, { task, repetition })
+        Axios.put(`https://fs-todo.glitch.me/updateTask/${taskId}`, { task, time })
             .then((response) => {
                 alert('Task updated successfully');
                 // After successful update, update the list of tasks with the updated data
                 setListOfTask(listOfTask.map((task) => (task._id === taskId ? response.data : task)));
-                setEditedTask({ taskId: null, task: '', repetition: '' }); // Reset the edited task state
+                setEditedTask({ taskId: null, task: '', time: '' }); // Reset the edited task state
             })
             .catch((error) => {
                 console.error(error);
@@ -92,20 +109,17 @@ const Interface = (props) => {
 
         <div className="App">
 
-            {visible ?
-                <div className='form-container'>
+            <div className='form-container'>
 
-                    <FormComponent addFunction={createTask} setTask={setTask} setRepetition={setRepetition} repetition={repetition} />
+                <FormComponent addFunction={createTask} setTask={setTask} setTime={setTime} time={time} handleSearchChange={handleSearchChange} searchTasks={searchTasks} searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
-                </div>
-                : null
+            </div>
 
-            }
 
 
             <div className='table-container'>
 
-                <TableComponent deleteFunction={deleteTask} updateFunction={updateTask} listOfTask={listOfTask} editedTask={editedTask} setEditedTask={setEditedTask} handleEditChange={handleEditChange} handleEditTask={handleEditTask} setVisible={visible} />
+                <TableComponent deleteFunction={deleteTask} updateFunction={updateTask} listOfTask={listOfTask} editedTask={editedTask} setEditedTask={setEditedTask} handleEditChange={handleEditChange} handleEditTask={handleEditTask} setVisible={visible} searchQuery={searchQuery} />
 
             </div>
 

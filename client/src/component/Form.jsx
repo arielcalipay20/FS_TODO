@@ -1,24 +1,33 @@
 import React from 'react';
 
+
 const FormComponent = (props) => {
+    const visible = window.location.pathname === '/' ? true : false;
 
     const handleChange = (e) => {
         const value = e.target.value;
-        if (/^\d{0,1}$/.test(value)) {
-            props.setRepetition(value);
-        }
+        props.setTime(value);
     };
-    
+
     return (
         <>
 
-            <form onSubmit={props.addFunction}>
+            {visible ?
+                <form onSubmit={props.addFunction}>
 
-                <input type='text' placeholder='Task' onChange={(e) => props.setTask(e.target.value)} required />
-                <input type='number' placeholder='Repetition' value={props.repetition} onChange={handleChange} required />
-                <button type='submit'>Add Task</button>
+                    <input type='text' placeholder='Task' onChange={(e) => props.setTask(e.target.value)} required />
+                    <input type='text' placeholder='Time' value={props.time} onChange={handleChange} required />
+                    <button type='submit'>Add Task</button>
 
-            </form>
+                </form> :
+                <>
+
+                    <input type='text' placeholder='Search...' value={props.searchQuery} onChange={props.handleSearchChange} required />
+                    {props.searchQuery && (
+                        <button onClick={() => props.setSearchQuery('')}>Clear Search</button>
+                    )}
+
+                </>}
 
         </>
     );
